@@ -1,13 +1,14 @@
-import type { Configurator, EditorConfigOptions, OptionFiles, OptionIgnores, OptionOverridesFiles, OptionOverridesIgnores, OptionRules } from '@zokugun/eslint-toolkit';
+import type { Configurator, DefaultOptions } from '@zokugun/eslint-toolkit';
+import type { Linter } from 'eslint';
 
 import plugin from 'eslint-plugin-jsonc';
 
-import { RuleOptions } from './typegens/json.js';
-import { rules } from './rules/json.js';
+import * as editorConfig from './resolvers/editor-config.js';
+import * as embeddedIndent from './resolvers/embedded-indent.js';
+import { JsonRuleOptions } from './typegens/json.js';
+import { jsonRules } from './rules/json.js';
 
-type Options = OptionRules<RuleOptions> & OptionFiles & OptionIgnores & OptionOverridesFiles & OptionOverridesIgnores;
-
-export function json(options: Options = {}): Configurator {
+export function json(options: DefaultOptions<JsonRuleOptions> = {}): Configurator {
 	const files = options.overrides?.files ?? [
 		'**/*.json',
 		...(options.files ?? []),
@@ -23,36 +24,46 @@ export function json(options: Options = {}): Configurator {
 	];
 
 	return (resolve) => {
-		const ecRules: Partial<RuleOptions> = {};
-		const ecConfig = resolve<EditorConfigOptions>('editorconfig/json');
+		const rules = options.overrides?.rules ?? {
+			...jsonRules,
+			...editorConfig.json(resolve),
+			...options.rules,
+		};
 
-		if(ecConfig) {
-			const {
-				indent_size,
-				indent_style,
-			} = ecConfig;
+		const configs: Linter.Config[] = [
+			{
+				name: 'zokugun/json/plugin',
+				plugins: {
+					json: plugin,
+				},
+			},
+			{
+				name: 'zokugun/json/rules',
+				files,
+				ignores,
+				language: 'json/x',
+				rules,
+			},
+		];
 
-			if(indent_style === 'space') {
-				ecRules['json/indent'] = ['error', Number(indent_size)];
-			}
-			else if(indent_style === 'tab') {
-				ecRules['json/indent'] = ['error', 'tab'];
-			}
+		const embeddedFiles = options.embedded?.overrides?.files ?? resolve<string>('embedded/sources', []).map((value) => `${value}/*.json`);
+
+		if(embeddedFiles.length > 0) {
+			const ignores = options.embedded?.overrides?.ignores ?? options.embedded?.ignores ?? [];
+			const rules = options.embedded?.overrides?.rules ?? {
+				...embeddedIndent.json(resolve),
+				...(options.embedded?.rules ?? []),
+			};
+
+			configs.push({
+				name: 'zokugun/json/embedded',
+				files: embeddedFiles,
+				ignores,
+				rules,
+			});
 		}
 
-		return {
-			name: 'zokugun/json/rules',
-			files,
-			ignores,
-			plugins: {
-				json: plugin,
-			},
-			language: "json/x",
-			rules: {
-				...rules,
-				...ecRules,
-				...options.rules,
-			},
-		};
+		return configs;
 	};
 }
+

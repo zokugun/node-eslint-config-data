@@ -1,6 +1,6 @@
-import { RuleOptions} from '../typegens/jsonc.js';
+import { JsoncRuleOptions} from '../typegens/jsonc.js';
 
-export const rules: Partial<RuleOptions> = {
+export const jsoncRules: Partial<JsoncRuleOptions> = {
 	'jsonc/array-bracket-newline': [
 		'error',
 		{

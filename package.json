@@ -1,6 +1,6 @@
 {
 	"name": "@zokugun/eslint-config-data",
-	"description": "ESLint configurators for JSON, JSONC, and YAML files with editorconfig support.",
+	"description": "ESLint configurations for JSON, JSONC, and YAML with EditorConfig support.",
 	"version": "0.1.0",
 	"author": {
 		"name": "Baptiste Augrain",
@@ -55,7 +55,7 @@
 		"watch:src": "tsc-watch -p src"
 	},
 	"dependencies": {
-		"@zokugun/eslint-toolkit": "0.1.1",
+		"@zokugun/eslint-toolkit": "0.3.0",
 		"eslint-plugin-jsonc": "3.3.0",
 		"eslint-plugin-yml": "3.8.1",
 		"yaml-eslint-parser": "2.1.0"
@@ -64,7 +64,7 @@
 		"@commitlint/cli": "20.5.3",
 		"@commitlint/config-conventional": "20.5.3",
 		"@types/node": "24.13.2",
-		"@zokugun/eslint-typegen-plus": "0.1.0",
+		"@zokugun/eslint-typegen-plus": "0.3.0",
 		"@zokugun/tsc-leda": "0.6.0",
 		"eslint": "10.8.1",
 		"fixpack": "4.0.0",

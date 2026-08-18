@@ -1,6 +1,6 @@
-import { RuleOptions } from '../typegens/yaml.js';
+import { YamlRuleOptions } from '../typegens/yaml.js';
 
-export const rules: Partial<RuleOptions> = {
+export const yamlRules: Partial<YamlRuleOptions> = {
 	'yaml/block-mapping-colon-indicator-newline': [
 		'error',
 	],
