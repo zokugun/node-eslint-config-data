@@ -28,6 +28,14 @@ export function yaml(resolve: Resolver): Partial<YamlRuleOptions> {
 	}
 
 	return {
-		'yaml/indent': ['error', indent],
+		'yaml/indent': [
+			'error',
+			indent,
+			{
+				indentBlockSequences: true,
+				indicatorValueIndent: 2,
+				alignMultilineFlowScalars: true,
+			},
+		],
 	};
 }

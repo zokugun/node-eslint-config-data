@@ -67,7 +67,7 @@ export function yaml(resolve: Resolver): Partial<YamlRuleOptions> {
 			indentSize,
 			{
 				indentBlockSequences: true,
-				indicatorValueIndent: indentSize,
+				indicatorValueIndent: 2,
 				alignMultilineFlowScalars: true,
 			},
 		];
