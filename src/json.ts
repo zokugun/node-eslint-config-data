@@ -52,7 +52,7 @@ export function json(options: DefaultOptions<JsonRuleOptions> = {}): Configurato
 			const ignores = options.embedded?.overrides?.ignores ?? options.embedded?.ignores ?? [];
 			const rules = options.embedded?.overrides?.rules ?? {
 				...embeddedIndent.json(resolve),
-				...(options.embedded?.rules ?? []),
+				...options.embedded?.rules,
 			};
 
 			configs.push({

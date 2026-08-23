@@ -47,7 +47,7 @@ export function yaml(options: DefaultOptions<YamlRuleOptions> = {}): Configurato
 			const rules = options.embedded?.overrides?.rules ?? {
 				'yaml/file-extension': ['off'],
 				...embeddedIndent.yaml(resolve),
-				...(options.embedded?.rules ?? []),
+				...options.embedded?.rules,
 			};
 
 			configs.push({

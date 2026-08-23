@@ -48,7 +48,7 @@ export function jsonc(options: DefaultOptions<JsoncRuleOptions> = {}): Configura
 			const ignores = options.embedded?.overrides?.ignores ?? options.embedded?.ignores ?? [];
 			const rules = options.embedded?.overrides?.rules ?? {
 				...embeddedIndent.jsonc(resolve),
-				...(options.embedded?.rules ?? []),
+				...options.embedded?.rules,
 			};
 
 			configs.push({
